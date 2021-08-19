@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+ 
+<head>
+    <title>Python Flask App</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> 
+</head>
+ 
+<body>
+    <div class="container">
+        <div class="jumbotron">
+            <h1>Data Visualization</h1>
+            <p class="lead">
+                Visualization of data retrieved from MySQL Database.
+            </p>
+            </p>
+        </div>
+
+        <div class="row my-4 py-4">
+            <div class="col-lg-12 text-center">
+                <h2>Count by States</h2>
+                <canvas id="stateBarChart" style="width:100%;max-width: max-content;"></canvas>
+            </div>
+        </div>
+
+        <div class="row my-4  py-4">
+            <div class="col-lg-6 text-center">
+                <h2>Count by Categories</h2>
+                <canvas id="catPieChart" style="width:100%;max-width: max-content;"></canvas>
+            </div>
+
+            <div class="col-lg-6 text-center">
+                <h2>Count by Subcategories</h2>
+                <canvas id="subCatPieChart" style="width:100%;max-width: max-content;"></canvas>
+            </div>
+        </div>
+
+        <div class="row my-4 py-4">
+            <div class="col-lg-12 text-center">
+                <h2>Profits by Month and Year</h2>
+                <canvas id="profitLineChart" style="width:100%;max-width: max-content;"></canvas>
+            </div>
+        </div>
+
+        <div class="row my-4 py-4">
+            <div class="col-lg-12 text-center">
+                <h2>Sales by Month and Year</h2>
+                <canvas id="salesScatterChart" style="width:100%;max-width: max-content;"></canvas>
+            </div>
+        </div>
+
+        <div class="row my-4 py-4">
+            <div class="col-lg-6 text-center">
+                <h2>Profits by Category</h2>
+                <canvas id="catProfitPieChart" style="width:100%;max-width: max-content;"></canvas>
+            </div>
+
+            <div class="col-lg-6 text-center">
+                <h2>Sales by Category</h2>
+                <canvas id="catSalesPieChart" style="width:100%;max-width: max-content;"></canvas>
+            </div>
+        </div>
+
+        <div class="row my-4 py-4">
+            <div class="col-lg-6">
+                {% for key, value in data.items() %}
+                    {% if key == "state" %}
+                        <table class="table">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>State</th>
+                                    <th>Count</th>
+                                </tr>
+                            </thead>
+                            {% for itm in data[key] %}
+                                <tr>
+                                    {% for ky, val in itm.items() %}
+                                        <td>{{val}}</td>
+                                    {% endfor %}
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    {% endif %}
+                {% endfor %}
+            </div>
+ 
+            <div class="col-lg-3">
+                {% for key, value in data.items() %}
+
+                    {% if key == "category" %}
+                        <table class="table">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>Category</th>
+                                    <th>Count</th>
+                                </tr>
+                            </thead>
+                            {% for itm in data[key] %}
+                                <tr>
+                                    {% for ky, val in itm.items() %}
+                                        <td>{{val}}</td>
+                                    {% endfor %}
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    {% endif %}
+
+                {% endfor %}
+            </div>
+
+            <div class="col-lg-3">
+                {% for key, value in data.items() %}
+
+                    {% if key == "subcategory" %}
+                        <table class="table">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>Sub Category</th>
+                                    <th>Count</th>
+                                </tr>
+                            </thead>
+                            {% for itm in data[key] %}
+                                <tr>
+                                    {% for ky, val in itm.items() %}
+                                        <td>{{val}}</td>
+                                    {% endfor %}
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    {% endif %}
+
+                {% endfor %}
+            </div>
+        </div>
+ 
+        <footer class="footer">
+            <p>&copy; 2021</p>
+        </footer>
+ 
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js" integrity="sha512-d9xgZrVZpmmQlfonhQUvTR7lMPtO7NkZMkA0ABN3PHCbKA5nqylQ/yWlFAyY6hYgdF1Qh6nYiuADWwKB4C2WSw=="crossorigin="anonymous">
+    </script>
+    <script type="text/Javascript">
+
+        new Chart("profitLineChart", {
+            type: "line",
+            data: {
+                labels: {{ orderprofitlabels | safe }},
+                datasets: [{
+                    fill:false,
+                    lineTension: 0,
+                    backgroundColor: "rgba(0,0,0,1.0)",
+                    borderColor: "rgba(0,0,0,0.1)",
+                    data: {{ orderprofitvalues | safe }}
+                }]
+            },
+            options:{
+                title: {
+                    display: true,
+                    text: "Profit by Month and Year (Order Date)"
+                },
+                legend: {display: false},
+                
+            }
+        });
+
+        new Chart("salesScatterChart", {
+            type: "line",
+            data: {
+                labels: {{ ordersaleslabels | safe }},
+                datasets: [{
+                    fill:false,
+                    lineTension:0,
+                    backgroundColor: "rgba(0,0,255,1.0)",
+                    borderColor: "rgba(0,0,255,0.1)",
+                    data: {{ ordersalesvalues | safe }}
+                }]
+            },
+            options:{
+                title: {
+                    display: true,
+                    text: "Sales by Month and Year (Order Date)"
+                },
+                legend: {display: false},
+            }
+        });
+
+        new Chart("catPieChart", {
+            type: "pie",
+            data: {
+                labels: {{ catnames | safe }},
+                datasets: [{
+                    backgroundColor: {{ catcolors | safe }},
+                    data: {{ catcounts | safe }}
+                }]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: "Count by Categories  - Pie Chart"
+                }
+            }
+        });
+
+        new Chart("catProfitPieChart", {
+            type: "pie",
+            data: {
+                labels: {{ catprofitlabels | safe }},
+                datasets: [{
+                    backgroundColor: {{ catprofitcolors | safe }},
+                    data: {{ catprofitvalues | safe }}
+                }]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: "Profit by Categories  - Pie Chart"
+                }
+            }
+        });
+
+        new Chart("catSalesPieChart", {
+            type: "pie",
+            data: {
+                labels: {{ catsaleslabels | safe }},
+                datasets: [{
+                    backgroundColor: {{ catsalescolors | safe }},
+                    data: {{ catsalesvalues | safe }}
+                }]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: "Sales by Categories  - Pie Chart"
+                }
+            }
+        });
+
+        new Chart("subCatPieChart", {
+            type: "doughnut",
+            data: {
+                labels: {{ subcatnames | safe }},
+                datasets: [{
+                    backgroundColor: {{ subcatcolors | safe }},
+                    data: {{ subcatcounts | safe }}
+                }]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: "Count by Categories  - Pie Chart"
+                }
+            }
+        });
+
+        var xValues = ["Italy", "France", "Spain", "USA", "Argentina"];
+        var yValues = [55, 49, 44, 24, 15];
+        var barColors = ["red", "green","blue","orange","brown"];
+        
+        new Chart("stateBarChart", {
+          type: "bar",
+          data: {
+            labels: {{ statenames | safe }},
+            datasets: [{
+              backgroundColor: {{ statecolors | safe }},
+              data: {{ statecounts | safe }}
+            }]
+          },
+          options: {
+            legend: {display: false},
+            title: {
+              display: true,
+              text: "Counts by State - Bar Chart"
+            }
+          }
+        });
+    </script>
+</body>
+ 
+</html>
